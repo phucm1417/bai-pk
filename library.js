@@ -140,6 +140,7 @@
   async function flyPig() {
     const pig = $('preview-pig');
     const suction = $('preview-suction');
+    const airflow = $('preview-airflow');
     const target = $('preview-opponent-character');
     const base = board.getBoundingClientRect();
     const a = $('preview-my-character').getBoundingClientRect();
@@ -147,21 +148,26 @@
     const from = {x:a.left+a.width/2-base.left,y:a.top+a.height/2-base.top};
     const to = {x:b.left+b.width/2-base.left,y:b.top+b.height/2-base.top};
     const dx=from.x-to.x,dy=from.y-to.y;
-    const retreat={x:to.x+dx*.24,y:to.y+dy*.24};
-    const pullX=(retreat.x-to.x)*.82,pullY=(retreat.y-to.y)*.82;
+    const retreat={x:to.x+dx*.34,y:to.y+dy*.34};
+    const pullX=(retreat.x-to.x)*.92,pullY=(retreat.y-to.y)*.92;
     pig.classList.add('visible');
     pig.getAnimations().forEach((animation)=>animation.cancel());
     const arrival=pig.animate([{left:`${from.x}px`,top:`${from.y}px`,transform:'translate(-50%,-50%) scale(.6)'},{left:`${(from.x+to.x)/2}px`,top:`${(from.y+to.y)/2-28}px`,transform:'translate(-50%,-50%) scale(1.2) rotate(-15deg)',offset:.55},{left:`${to.x}px`,top:`${to.y}px`,transform:'translate(-50%,-50%) scale(1.05) rotate(8deg)'}],{duration:1000,easing:'cubic-bezier(.18,.78,.3,1)'});
     await arrival.finished.catch(()=>{});
-    suction.style.left=`${to.x}px`;
-    suction.style.top=`${to.y}px`;
+    const distance=Math.hypot(retreat.x-to.x,retreat.y-to.y),angle=Math.atan2(retreat.y-to.y,retreat.x-to.x)*180/Math.PI;
+    suction.style.left=`${retreat.x}px`;
+    suction.style.top=`${retreat.y}px`;
     suction.classList.add('visible');
     suction.getAnimations().forEach((animation)=>animation.cancel());
-    const pull=target.animate([{transform:'translate(-50%,-50%) scale(1) rotate(0deg)'},{transform:`translate(calc(-50% + ${pullX}px),calc(-50% + ${pullY}px)) scale(.16) rotate(24deg)`,offset:.68},{transform:'translate(-50%,-50%) scale(1.18) rotate(-10deg)'},{transform:'translate(-50%,-50%) scale(1) rotate(0deg)'}],{duration:880,easing:'cubic-bezier(.18,.78,.3,1)'});
-    const recoil=pig.animate([{left:`${to.x}px`,top:`${to.y}px`,transform:'translate(-50%,-50%) scale(1.08) rotate(0deg)'},{left:`${retreat.x}px`,top:`${retreat.y}px`,transform:'translate(-50%,-50%) scale(1.25) rotate(-24deg)',offset:.48},{left:`${retreat.x}px`,top:`${retreat.y}px`,transform:'translate(-50%,-50%) scale(.82) rotate(8deg)'}],{duration:880,easing:'cubic-bezier(.2,.8,.3,1)'});
-    suction.animate([{transform:'translate(-50%,-50%) scale(.25) rotate(0deg)',opacity:0},{transform:'translate(-50%,-50%) scale(1.18) rotate(190deg)',opacity:1,offset:.38},{transform:'translate(-50%,-50%) scale(.45) rotate(390deg)',opacity:.75,offset:.72},{transform:'translate(-50%,-50%) scale(0) rotate(540deg)',opacity:0}],{duration:880,easing:'ease-in'});
+    if(airflow){airflow.style.left=`${to.x}px`;airflow.style.top=`${to.y}px`;airflow.style.width=`${distance}px`;airflow.style.setProperty('--flow-angle',`${angle}deg`);airflow.style.setProperty('--airflow-distance',`${distance}px`);airflow.classList.add('visible');airflow.getAnimations().forEach((animation)=>animation.cancel())}
+    const pull=target.animate([{transform:'translate(-50%,-50%) scale(1) rotate(0deg)'},{transform:`translate(calc(-50% + ${pullX*.55}px),calc(-50% + ${pullY*.55}px)) scale(.58) rotate(17deg)`,offset:.48},{transform:`translate(calc(-50% + ${pullX}px),calc(-50% + ${pullY}px)) scale(.08) rotate(-22deg)`,offset:.73},{transform:'translate(-50%,-50%) scale(1.2) rotate(13deg)',offset:.87},{transform:'translate(-50%,-50%) scale(1) rotate(0deg)'}],{duration:1050,easing:'cubic-bezier(.18,.78,.3,1)'});
+    const recoil=pig.animate([{left:`${to.x}px`,top:`${to.y}px`,transform:'translate(-50%,-50%) scale(1.08) rotate(0deg)'},{left:`${retreat.x}px`,top:`${retreat.y}px`,transform:'translate(-50%,-50%) scale(1.45) rotate(-26deg)',offset:.48},{left:`${retreat.x}px`,top:`${retreat.y}px`,transform:'translate(-50%,-50%) scale(1.18) rotate(8deg)'}],{duration:1050,easing:'cubic-bezier(.2,.8,.3,1)'});
+    suction.animate([{transform:'translate(-50%,-50%) scale(.18) rotate(0deg)',opacity:0},{transform:'translate(-50%,-50%) scale(1.32) rotate(170deg)',opacity:1,offset:.38},{transform:'translate(-50%,-50%) scale(.82) rotate(370deg)',opacity:.9,offset:.75},{transform:'translate(-50%,-50%) scale(0) rotate(560deg)',opacity:0}],{duration:1050,easing:'ease-in'});
+    if(airflow)airflow.animate([{transform:'rotate(var(--flow-angle)) scaleX(.02)',opacity:0},{transform:'rotate(var(--flow-angle)) scaleX(1)',opacity:.95,offset:.24},{transform:'rotate(var(--flow-angle)) scaleX(.86)',opacity:.82,offset:.72},{transform:'rotate(var(--flow-angle)) scaleX(0)',opacity:0}],{duration:1050,easing:'cubic-bezier(.2,.7,.35,1)'});
+    board.animate([{transform:'translateX(0)'},{transform:'translateX(-4px) rotate(-.25deg)',offset:.28},{transform:'translateX(4px) rotate(.25deg)',offset:.56},{transform:'translateX(-2px)',offset:.78},{transform:'translateX(0)'}],{duration:420,easing:'ease-out'});
     await Promise.all([pull.finished.catch(()=>{}),recoil.finished.catch(()=>{})]);
     suction.classList.remove('visible');
+    if(airflow)airflow.classList.remove('visible');
     pig.classList.remove('visible');
   }
 
