@@ -20,7 +20,7 @@
     <section id="lobby" class="lobby">
       <div class="hero-copy"><div class="eyebrow"><span>✿</span> ĐẤU TRƯỜNG VUI VẺ</div><h1>Úp bài.<br /><em>Bật cười.</em></h1><p>Đấu trí với bạn bè trong một trận bài nhanh gọn. Một lá gây sát thương, một lá tạo bất ngờ — chọn sao cho thật khéo nhé!</p>
         <div class="lobby-actions"><button id="create-room" class="button primary">Tạo phòng <span>↗</span></button><div class="join-row"><input id="room-input" maxlength="8" placeholder="Mã phòng" aria-label="Mã phòng" /><button id="join-room" class="button secondary">Vào phòng</button></div></div>
-        <div class="character-settings"><button id="settings-toggle" class="settings-toggle" aria-expanded="false">☺ Tùy chỉnh nhân vật <span id="selected-color-dot">●</span></button><div id="settings-panel" class="settings-panel hidden"><strong>Chọn màu nhân vật của bạn</strong><div class="color-options"><button class="color-swatch" data-color="#ff8a71" aria-label="Hồng cam"></button><button class="color-swatch" data-color="#67b8d4" aria-label="Xanh biển"></button><button class="color-swatch" data-color="#a28bdf" aria-label="Tím"></button><button class="color-swatch" data-color="#e8ba4f" aria-label="Vàng"></button><button class="color-swatch" data-color="#68b98b" aria-label="Xanh lá"></button></div></div></div>
+        <div class="lobby-tools"><div class="character-settings"><button id="settings-toggle" class="settings-toggle" aria-expanded="false">☺ Tùy chỉnh nhân vật <span id="selected-color-dot">●</span></button><div id="settings-panel" class="settings-panel hidden"><strong>Chọn màu nhân vật của bạn</strong><div class="color-options"><button class="color-swatch" data-color="#ff8a71" aria-label="Hồng cam"></button><button class="color-swatch" data-color="#67b8d4" aria-label="Xanh biển"></button><button class="color-swatch" data-color="#a28bdf" aria-label="Tím"></button><button class="color-swatch" data-color="#e8ba4f" aria-label="Vàng"></button><button class="color-swatch" data-color="#68b98b" aria-label="Xanh lá"></button></div></div></div><button id="open-library" class="button secondary library-open">▧ Thư viện bài <span>↗</span></button></div>
         <div id="lobby-message" class="lobby-message">Hai người chơi, hai bộ bài, một trận đấu vui.</div>
       </div>
       <div class="hero-art" aria-hidden="true"><div class="sunburst"></div><div class="floating-note note-one">-2 HP</div><div class="floating-note note-two">+1 ✦</div><div class="big-card card-back"><div class="back-stamp">ÚB</div><span>✿</span></div><div class="big-card card-front"><div class="card-ribbon">THẺ MẪU</div><div class="card-emoji">🍡</div><strong>KẸO DẺO<br />BẬT NẢY</strong><small>Chơi vui, đau thật!</small><div class="card-stat">−2</div></div><div class="spark s-one">✳</div><div class="spark s-two">✧</div></div>
@@ -28,7 +28,7 @@
     </section>
 
     <section id="game" class="game hidden">
-      <div class="game-head"><div><div class="eyebrow">PHÒNG <span id="room-code">——</span></div><h2 id="turn-title">Đang chờ đối thủ...</h2></div><div class="head-right"><button id="copy-link" class="button secondary compact">Sao chép link ↗</button><button id="leave-room" class="icon-btn leave" title="Rời phòng">×</button></div></div>
+      <div class="game-head"><div><div class="eyebrow">PHÒNG <span id="room-code">——</span></div><h2 id="turn-title">Đang chờ đối thủ...</h2></div><div class="head-right"><button id="copy-link" class="button secondary compact">Sao chép link ↗</button><button id="back-lobby" class="button secondary compact">⌂ Về sảnh</button><button id="leave-room" class="icon-btn leave" title="Rời phòng">×</button></div></div>
       <div class="arena">
         <div id="pig-runner" class="pig-runner hidden" aria-hidden="true">🐖</div><div id="discard-fly" class="discard-fly" aria-hidden="true"></div>
         <div class="character-figure opponent-character" id="opponent-character" aria-label="Nhân vật đối thủ"><svg viewBox="0 0 64 64"><path class="character-body" d="M32 5C20 5 11 15 11 28c0 7 3 12 8 16l-3 13h32l-3-13c5-4 8-9 8-16C53 15 44 5 32 5Z"/><circle cx="25" cy="29" r="2.6" class="character-eye"/><circle cx="39" cy="29" r="2.6" class="character-eye"/><path d="M27 37q5 5 10 0" class="character-smile"/></svg><small id="opponent-character-name">ĐỐI THỦ</small></div><div class="character-figure my-character" id="my-character" aria-label="Nhân vật của bạn"><svg viewBox="0 0 64 64"><path class="character-body" d="M32 5C20 5 11 15 11 28c0 7 3 12 8 16l-3 13h32l-3-13c5-4 8-9 8-16C53 15 44 5 32 5Z"/><circle cx="25" cy="29" r="2.6" class="character-eye"/><circle cx="39" cy="29" r="2.6" class="character-eye"/><path d="M27 37q5 5 10 0" class="character-smile"/></svg><small>BẠN</small></div>
@@ -41,11 +41,27 @@
     </section>
     <footer>Được làm để những cuộc hẹn xa vẫn có thể gần nhau <span>♥</span></footer>
   </main>
+  <section id="card-library" class="library-modal hidden" role="dialog" aria-modal="true" aria-labelledby="library-title">
+    <div class="library-scrim" data-close-library></div>
+    <div class="library-window">
+      <header class="library-header"><div><div class="eyebrow">BỘ BÀI ÚP BÀI</div><h2 id="library-title">Thư viện bài</h2><p>Chọn một lá để xem và thử nhanh hiệu ứng trên bàn mô phỏng.</p></div><button id="close-library" class="icon-btn" aria-label="Đóng thư viện">×</button></header>
+      <div class="library-layout"><div class="library-grid-wrap"><div class="library-filter"><span>24 LÁ BÀI</span><span>Nhấn lá để chạy hiệu ứng</span></div><div id="library-grid" class="library-grid"></div></div>
+        <aside class="preview-panel"><div class="preview-title">BÀN THỬ HIỆU ỨNG</div><div id="preview-board" class="preview-board"><div id="preview-pig" class="preview-pig" aria-hidden="true">🐖</div><div id="preview-damage" class="preview-damage"></div>
+          <div class="preview-player preview-opponent"><span class="preview-avatar" id="preview-opponent-avatar">☁</span><div><b>ĐỐI THỦ</b><small id="preview-opponent-status">Sẵn sàng nhận hiệu ứng</small></div><div id="preview-opponent-health" class="preview-health"></div></div>
+          <div id="preview-opponent-character" class="preview-character opponent">☺</div>
+          <div class="preview-card-stage"><article id="preview-card" class="preview-card"><span class="preview-category">CHỌN MỘT LÁ</span><span id="preview-power" class="power">✦</span><span id="preview-emoji" class="emoji">🃏</span><strong id="preview-name">Lá bài sẽ hiện ở đây</strong><small id="preview-text">Nhấn vào bất kỳ lá bài nào trong thư viện để thử hiệu ứng.</small></article></div>
+          <div id="preview-my-character" class="preview-character mine">☺</div>
+          <div class="preview-player preview-me"><span class="preview-avatar">☺</span><div><b>BẠN</b><small id="preview-my-status">Sẵn sàng sử dụng bài</small></div><div id="preview-my-health" class="preview-health"></div></div>
+        </div><div class="preview-actions"><button id="preview-again" class="button primary" disabled>Thử hiệu ứng ↗</button><button id="preview-reset" class="button secondary">Đặt lại bàn</button></div><div id="preview-log" class="preview-log" aria-live="polite">Chọn một lá bài để bắt đầu.</div></aside>
+      </div>
+    </div>
+  </section>
   <div id="toast" class="toast"></div>
   <div id="coin-modal" class="modal hidden"><div class="modal-card"><div class="modal-icon">✦</div><div class="eyebrow">TRẬN ĐẤU BẮT ĐẦU</div><h2>Tung đồng xu!</h2><p id="coin-result">Đang chọn người đi trước...</p><div class="coin-flip">✿</div></div></div>
   <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
   <script src="cards.js"></script>
   <script src="game.js"></script>
+  <script src="library.js"></script>
 </body>
 </html>
 

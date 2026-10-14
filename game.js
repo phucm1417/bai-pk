@@ -77,7 +77,9 @@
   function finishGame(){stopTimer();const won=game.winner===seat;$('turn-title').textContent=won?'Bạn thắng rồi!':'Bạn thua mất rồi!';$('turn-pill').textContent=won?'BẠN THẮNG':'BẠN THUA';$('selection-hint').textContent=won?'Đã hạ đối thủ!':'Lần sau phục thù nhé!';$('play-turn').disabled=true;$('restart-btn').classList.remove('hidden');}
   $('restart-btn').onclick=()=>{if(seat==='host'&&conn?.open){STATUS.started=false;startMatch()}else toast('Chủ phòng mới có thể bắt đầu ván mới.');};
   $('copy-link').onclick=async()=>{const url=new URL(location.href);url.hash='room='+room;try{await navigator.clipboard.writeText(url.href);toast('Đã sao chép link phòng!')}catch{prompt('Sao chép link phòng này:',url.href)}};
-  $('leave-room').onclick=()=>{stopTimer();if(conn)conn.close();if(peer)peer.destroy();peer=null;conn=null;game=null;hand=[];deck=[];discard=[];STATUS.started=false;setOnline(false,'Chưa vào phòng');$('game').classList.add('hidden');$('lobby').classList.remove('hidden');say('Bạn đã rời phòng. Tạo phòng mới để chơi tiếp nhé.')};
+  function returnToLobby(){stopTimer();if(conn)conn.close();if(peer)peer.destroy();peer=null;conn=null;game=null;hand=[];deck=[];discard=[];selected.clear();STATUS.started=false;setOnline(false,'Chưa vào phòng');$('game').classList.add('hidden');$('lobby').classList.remove('hidden');say('Bạn đã rời phòng. Tạo phòng mới để chơi tiếp nhé.')}
+  $('leave-room').onclick=returnToLobby;
+  $('back-lobby').onclick=returnToLobby;
   $('sound-btn').onclick=()=>{sound=!sound;$('sound-btn').style.opacity=sound?'1':'.45';toast(sound?'Đã bật âm thanh':'Đã tắt âm thanh')};
   const hash=new URLSearchParams(location.hash.slice(1));if(hash.get('room')){$('room-input').value=hash.get('room').toUpperCase();setTimeout(()=>join(hash.get('room').toUpperCase()),400)}
 })();

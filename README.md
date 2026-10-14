@@ -14,6 +14,7 @@ Mở `index.html` bằng một máy chủ web tĩnh, ví dụ VS Code Live Serve
 - Về 0 máu là thua. Lá trên tay đối thủ được giữ kín; lá đã đánh được lật lên.
 - Lá đã đánh bay vào chồng bài bỏ. Khi bộ bài rút cạn, chồng bài bỏ được xáo lại thành bộ bài mới.
 - Chọn màu nhân vật của bạn trong phần tùy chỉnh ở sảnh chờ. Khi bị trúng đòn, nhân vật giật lùi, tim nháy đỏ và sát thương hiện lên.
+- Mở **Thư viện bài** ở sảnh để xem đủ 24 lá. Chạm vào một lá để thử nhanh hiệu ứng trên bàn mô phỏng; nút **Về sảnh** trong trận giúp rời phòng và quay lại sảnh.
 - Lá `c1`, **Con heo ủn ỉn**, nhảy sang sân đối thủ rồi húc đầu vào nhân vật để gây 1 sát thương.
 - Chỉnh danh sách lá, tên, mô tả và dữ liệu hiệu ứng trong `cards.js`. ID như `c1` chỉ là mã nội bộ, không hiển thị trên lá. Các loại hiệu ứng được game hỗ trợ được ghi chú ở đầu file.
 
