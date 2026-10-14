@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f6eacb" />
+  <title>Úp Bài — Đấu trường vui vẻ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Úp Bài trang chủ"><span class="brand-mark">✦</span><span>ÚP BÀI</span></a>
+      <div class="top-actions"><span class="online-dot"></span><span id="connection-label">Chưa vào phòng</span><button id="sound-btn" class="icon-btn" title="Bật/tắt âm thanh">♫</button></div>
+    </header>
+
+    <section id="lobby" class="lobby">
+      <div class="hero-copy"><div class="eyebrow"><span>✿</span> ĐẤU TRƯỜNG VUI VẺ</div><h1>Úp bài.<br /><em>Bật cười.</em></h1><p>Đấu trí với bạn bè trong một trận bài nhanh gọn. Một lá gây sát thương, một lá tạo bất ngờ — chọn sao cho thật khéo nhé!</p>
+        <div class="lobby-actions"><button id="create-room" class="button primary">Tạo phòng <span>↗</span></button><div class="join-row"><input id="room-input" maxlength="8" placeholder="Mã phòng" aria-label="Mã phòng" /><button id="join-room" class="button secondary">Vào phòng</button></div></div>
+        <div id="lobby-message" class="lobby-message">Hai người chơi, hai bộ bài, một trận đấu vui.</div>
+      </div>
+      <div class="hero-art" aria-hidden="true"><div class="sunburst"></div><div class="floating-note note-one">-2 HP</div><div class="floating-note note-two">+1 ✦</div><div class="big-card card-back"><div class="back-stamp">ÚB</div><span>✿</span></div><div class="big-card card-front"><div class="card-ribbon">THẺ MẪU</div><div class="card-emoji">🍡</div><strong>KẸO DẺO<br />BẬT NẢY</strong><small>Chơi vui, đau thật!</small><div class="card-stat">−2</div></div><div class="spark s-one">✳</div><div class="spark s-two">✧</div></div>
+      <div class="rules-strip"><div><b>♡ 10 máu</b><span>Ai về 0 trước sẽ thua</span></div><div><b>▧ 24 lá / bộ</b><span>Hết bài khi rút cạn bộ</span></div><div><b>◷ 20 giây</b><span>Mỗi lượt phải chốt bài</span></div></div>
+    </section>
+
+    <section id="game" class="game hidden">
+      <div class="game-head"><div><div class="eyebrow">PHÒNG <span id="room-code">——</span></div><h2 id="turn-title">Đang chờ đối thủ...</h2></div><div class="head-right"><button id="copy-link" class="button secondary compact">Sao chép link ↗</button><button id="leave-room" class="icon-btn leave" title="Rời phòng">×</button></div></div>
+      <div class="arena">
+        <section class="side opponent-side"><div class="player-row"><div class="avatar opponent-avatar">☁</div><div class="player-meta"><strong id="opponent-name">Đối thủ</strong><span id="opponent-status">Đang kết nối...</span></div><div class="health" id="opponent-health"></div><div class="deck-count"><span>▤</span><b id="opponent-deck">24</b></div></div><div class="hand opponent-hand" id="opponent-hand"></div></section>
+        <div class="table-center"><div class="turn-pill" id="turn-pill">CHỜ ĐỐI THỦ</div><div class="timer-wrap"><svg viewBox="0 0 76 76"><circle class="timer-track" cx="38" cy="38" r="32"></circle><circle id="timer-circle" class="timer-progress" cx="38" cy="38" r="32"></circle></svg><span id="timer-text">—</span></div><div class="battle-log" id="battle-log">Kết nối bạn bè để bắt đầu trận đấu.</div><div class="played-row"><div class="played-slot" id="opponent-play"><small>ĐỐI THỦ</small><span>?</span></div><div class="coin">✦</div><div class="played-slot" id="my-play"><small>BẠN</small><span>?</span></div></div></div>
+        <section class="side my-side"><div class="player-row"><div class="avatar my-avatar">☺</div><div class="player-meta"><strong>Bạn <span class="you-tag">BẠN</span></strong><span id="my-status">Sẵn sàng chiến đấu</span></div><div class="health" id="my-health"></div><div class="deck-count"><span>▤</span><b id="my-deck">24</b></div></div><div class="hand my-hand" id="my-hand"></div></section>
+      </div>
+      <div class="play-controls"><div class="selection-hint" id="selection-hint">Chọn tối đa 1 lá sát thương và 1 lá hiệu ứng</div><button id="play-turn" class="button primary" disabled>Chốt lượt <span>↗</span></button></div>
+      <div class="game-footer"><span>✿ Bộ bài vui vẻ · 24 lá</span><span id="deck-warning"></span><button id="restart-btn" class="text-btn hidden">Chơi ván mới</button></div>
+    </section>
+    <footer>Được làm để những cuộc hẹn xa vẫn có thể gần nhau <span>♥</span></footer>
+  </main>
+  <div id="toast" class="toast"></div>
+  <div id="coin-modal" class="modal hidden"><div class="modal-card"><div class="modal-icon">✦</div><div class="eyebrow">TRẬN ĐẤU BẮT ĐẦU</div><h2>Tung đồng xu!</h2><p id="coin-result">Đang chọn người đi trước...</p><div class="coin-flip">✿</div></div></div>
+  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
