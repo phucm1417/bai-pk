@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Thử hiệu ứng — Con heo ủn ỉn</title>
+  <style>
+    :root{--ink:#282b38;--muted:#81818c;--cream:#fbf6e9;--paper:#fffdf7;--orange:#ff815e;--line:#e9e2d4}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--cream);color:var(--ink);font:14px/1.5 'Segoe UI',sans-serif;display:grid;place-items:center;padding:24px;background-image:radial-gradient(#e8ddc6 1px,transparent 1px);background-size:24px 24px}
+    main{width:min(760px,100%)}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.brand{font-weight:900;letter-spacing:1px}.brand i{font-style:normal;color:var(--orange);margin-right:7px}.back{color:#706d76;text-decoration:none;font-size:12px}
+    .board{height:480px;position:relative;overflow:hidden;border:1px solid #eadfc8;border-radius:24px;background:linear-gradient(180deg,#f3e9ff 0%,#fbf1dc 49%,#e9f7ea 100%);box-shadow:0 6px 0 #e8dcc4;padding:20px 24px;display:flex;flex-direction:column;justify-content:space-between}
+    .player{display:flex;align-items:center;gap:10px;position:relative;z-index:1}.avatar{width:36px;height:36px;border-radius:13px;background:#d8cbff;display:grid;place-items:center;font-size:20px}.me .avatar{background:#bdebd3}.meta{display:grid;font-size:12px;font-weight:700}.meta small{font-weight:400;color:var(--muted)}.health{margin-left:auto;color:#ff9179;letter-spacing:2px;font-size:16px}.center{position:absolute;inset:0;display:grid;place-items:center}.label{position:absolute;top:48%;background:#fffaf0;border:1px solid var(--line);border-radius:18px;padding:6px 12px;font-size:9px;letter-spacing:1px;font-weight:800;color:#8e887d}.card{width:174px;height:236px;background:var(--paper);border:3px solid white;border-bottom:5px solid #ff9279;border-radius:18px;box-shadow:0 16px 30px #463f3222;display:flex;flex-direction:column;align-items:center;padding:14px 12px;position:relative;z-index:2;transform:rotate(-3deg)}.category{font-size:9px;font-weight:900;letter-spacing:1px;color:#e76545}.emoji{font-size:68px;line-height:1;margin:17px 0 10px;filter:drop-shadow(0 5px 0 #ffdec3)}.card strong{font-size:19px}.card small{text-align:center;color:var(--muted);font-size:10px;margin-top:5px}.power{position:absolute;right:10px;top:10px;background:#ffe3d9;color:#d45e48;border-radius:7px;padding:3px 7px;font-weight:800;font-size:11px}.pig{position:absolute;z-index:4;font-size:55px;line-height:1;pointer-events:none;filter:drop-shadow(0 5px 4px #46352238);display:none}.test-character{position:absolute;left:50%;top:25%;transform:translate(-50%,-50%);width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:#a28bdf;color:white;border:3px solid white;box-shadow:0 5px 14px #282b3833;font-size:32px;z-index:3}.test-character small{position:absolute;top:100%;font-size:8px;color:#62557e;font-weight:800;white-space:nowrap}.test-me{top:auto;bottom:7%;background:#68b98b;z-index:1}.controls{display:flex;align-items:center;justify-content:center;gap:12px;margin:20px 0}.button{border:0;border-radius:12px;background:var(--orange);color:white;padding:13px 18px;font-weight:800;cursor:pointer;box-shadow:0 4px 0 #d96145}.button:disabled{opacity:.55;cursor:default}.message{font-size:12px;color:var(--muted);text-align:center;min-height:19px}.code{background:#292b38;color:#f9edda;padding:16px 18px;border-radius:14px;overflow:auto;font:12px/1.65 Consolas,monospace;margin:12px 0 0}.code-title{font-weight:800;font-size:11px;color:#797681;letter-spacing:1px;margin-top:22px}
+    @media(max-width:520px){.board{height:430px;padding:16px}.card{width:152px;height:220px}.emoji{font-size:60px}.controls{flex-direction:column}.button{width:100%}.health{letter-spacing:0;font-size:14px}}
+  </style>
+</head>
+<body>
+  <main>
+    <header><div class="brand"><i>✦</i>THỬ HIỆU ỨNG LÁ BÀI</div><a class="back" href="index.html">← Về game</a></header>
+    <section class="board" aria-label="Bàn thử hiệu ứng lá bài">
+      <div class="player opponent"><div class="avatar">☁</div><div class="meta"><span>SÂN ĐỐI THỦ</span><small>Đích đến của heo</small></div><div id="opponent-health" class="health">♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥</div></div>
+      <div id="target-character" class="test-character">☺<small>NHÂN VẬT ĐỐI THỦ</small></div><div class="test-character test-me">☺</div>
+      <div class="center"><div class="label">SÂN ĐẤU</div><article class="card"><span class="category">SÁT THƯƠNG</span><span class="power" id="card-power">−1</span><span class="emoji" id="card-emoji">🐖</span><strong id="card-name">Con heo ủn ỉn</strong><small id="card-text">Khi hết lượt, heo chạy sang sân đối phương và gây 1 sát thương.</small></article></div>
+      <div id="pig" class="pig" aria-hidden="true">🐖</div>
+      <div class="player me"><div class="avatar">☺</div><div class="meta"><span>SÂN CỦA BẠN</span><small>Chọn lá rồi chốt lượt</small></div><div class="health">♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥</div></div>
+    </section>
+    <div class="controls"><button id="play" class="button">Đánh lá này <span>↗</span></button><button id="reset" class="button" style="background:#fffdf7;color:#282b38;box-shadow:0 4px 0 #e1d8c7">Đặt lại máu</button></div>
+    <div id="message" class="message">Bấm “Đánh lá này” để kết thúc lượt và xem heo lao sang sân đối thủ.</div>
+    <div class="code-title">DỮ LIỆU LÁ ĐẦU TIÊN TRONG cards.js</div><pre id="card-code" class="code">Đang nạp dữ liệu lá bài…</pre>
+  </main>
+  <script src="cards.js"></script>
+  <script>
+    const card=window.GAME_CARDS?.[0];let hp=10,busy=false;
+    const play=document.getElementById('play'),pig=document.getElementById('pig'),board=document.querySelector('.board');
+    if(card){document.getElementById('card-name').textContent=card.name;document.getElementById('card-emoji').textContent=card.emoji;document.getElementById('card-text').textContent=card.text;document.getElementById('card-power').textContent=card.power;document.getElementById('card-code').textContent=JSON.stringify(card,null,2)}else{document.getElementById('card-code').textContent='Không tìm thấy dữ liệu trong cards.js'}
+    function renderHealth(){document.getElementById('opponent-health').textContent=Array.from({length:10},(_,i)=>i<hp?'♥':'♡').join(' ')}
+    play.onclick=()=>{if(busy||!card)return;busy=true;play.disabled=true;document.getElementById('message').textContent='Hết lượt! Con heo nhảy sang sân đối thủ để húc đầu nhân vật…';const box=board.getBoundingClientRect(),from=document.querySelector('.test-me').getBoundingClientRect(),to=document.getElementById('target-character').getBoundingClientRect();const x=from.left+from.width/2-box.left,y=from.top+from.height/2-box.top,tx=to.left+to.width/2-box.left,ty=to.top+to.height/2-box.top,mx=(x+tx)/2,my=(y+ty)/2-35;pig.style.display='block';const anim=pig.animate([{left:`${x}px`,top:`${y}px`,transform:'translate(-50%,-50%) scale(.7)'},{left:`${mx}px`,top:`${my}px`,transform:'translate(-50%,-50%) scale(1.2) rotate(-18deg)',offset:.55},{left:`${tx}px`,top:`${ty}px`,transform:'translate(-50%,-50%) scale(1.2) rotate(8deg)'}],{duration:1300,easing:'cubic-bezier(.2,.8,.3,1)'});anim.onfinish=()=>{pig.style.display='none';hp=Math.max(0,hp-(Number(card.effect?.amount)||1));renderHealth();document.getElementById('message').textContent=hp===0?'Heo húc ngã đối thủ! Máu đối thủ về 0.':'Ủn ỉn! Đối thủ mất 1 máu, còn '+hp+' máu.';busy=false;play.disabled=false}}
+    document.getElementById('reset').onclick=()=>{hp=10;renderHealth();document.getElementById('message').textContent='Đã đặt lại máu. Bấm đánh để thử lại.'};
+  </script>
+</body>
+</html>
+
