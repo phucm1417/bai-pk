@@ -137,18 +137,32 @@
     projectile.animate([{left:`${x1}px`,top:`${y1}px`,transform:'translate(-50%,-50%) rotate(0) scale(.7)'},{left:`${(x1+x2)/2}px`,top:`${(y1+y2)/2-25}px`,transform:'translate(-50%,-50%) rotate(180deg) scale(1.18)',offset:.55},{left:`${x2}px`,top:`${y2}px`,transform:'translate(-50%,-50%) rotate(380deg) scale(.4)',opacity:.45}],{duration:780,easing:'cubic-bezier(.2,.8,.3,1)'}).onfinish=()=>projectile.remove();
   }
 
-  function flyPig() {
+  async function flyPig() {
     const pig = $('preview-pig');
+    const suction = $('preview-suction');
+    const target = $('preview-opponent-character');
     const base = board.getBoundingClientRect();
     const a = $('preview-my-character').getBoundingClientRect();
-    const b = $('preview-opponent-character').getBoundingClientRect();
+    const b = target.getBoundingClientRect();
     const from = {x:a.left+a.width/2-base.left,y:a.top+a.height/2-base.top};
     const to = {x:b.left+b.width/2-base.left,y:b.top+b.height/2-base.top};
-    const mid = {x:(from.x+to.x)/2,y:(from.y+to.y)/2-24};
+    const dx=from.x-to.x,dy=from.y-to.y;
+    const retreat={x:to.x+dx*.24,y:to.y+dy*.24};
+    const pullX=(retreat.x-to.x)*.82,pullY=(retreat.y-to.y)*.82;
     pig.classList.add('visible');
     pig.getAnimations().forEach((animation)=>animation.cancel());
-    const animation=pig.animate([{left:`${from.x}px`,top:`${from.y}px`,transform:'translate(-50%,-50%) scale(.6)'},{left:`${mid.x}px`,top:`${mid.y}px`,transform:'translate(-50%,-50%) scale(1.15) rotate(-15deg)',offset:.55},{left:`${to.x}px`,top:`${to.y}px`,transform:'translate(-50%,-50%) scale(1.05) rotate(8deg)'}],{duration:1000,easing:'cubic-bezier(.18,.78,.3,1)'});
-    return new Promise((resolve)=>{animation.onfinish=()=>{pig.classList.remove('visible');resolve()};animation.oncancel=resolve});
+    const arrival=pig.animate([{left:`${from.x}px`,top:`${from.y}px`,transform:'translate(-50%,-50%) scale(.6)'},{left:`${(from.x+to.x)/2}px`,top:`${(from.y+to.y)/2-28}px`,transform:'translate(-50%,-50%) scale(1.2) rotate(-15deg)',offset:.55},{left:`${to.x}px`,top:`${to.y}px`,transform:'translate(-50%,-50%) scale(1.05) rotate(8deg)'}],{duration:1000,easing:'cubic-bezier(.18,.78,.3,1)'});
+    await arrival.finished.catch(()=>{});
+    suction.style.left=`${to.x}px`;
+    suction.style.top=`${to.y}px`;
+    suction.classList.add('visible');
+    suction.getAnimations().forEach((animation)=>animation.cancel());
+    const pull=target.animate([{transform:'translate(-50%,-50%) scale(1) rotate(0deg)'},{transform:`translate(calc(-50% + ${pullX}px),calc(-50% + ${pullY}px)) scale(.16) rotate(24deg)`,offset:.68},{transform:'translate(-50%,-50%) scale(1.18) rotate(-10deg)'},{transform:'translate(-50%,-50%) scale(1) rotate(0deg)'}],{duration:880,easing:'cubic-bezier(.18,.78,.3,1)'});
+    const recoil=pig.animate([{left:`${to.x}px`,top:`${to.y}px`,transform:'translate(-50%,-50%) scale(1.08) rotate(0deg)'},{left:`${retreat.x}px`,top:`${retreat.y}px`,transform:'translate(-50%,-50%) scale(1.25) rotate(-24deg)',offset:.48},{left:`${retreat.x}px`,top:`${retreat.y}px`,transform:'translate(-50%,-50%) scale(.82) rotate(8deg)'}],{duration:880,easing:'cubic-bezier(.2,.8,.3,1)'});
+    suction.animate([{transform:'translate(-50%,-50%) scale(.25) rotate(0deg)',opacity:0},{transform:'translate(-50%,-50%) scale(1.18) rotate(190deg)',opacity:1,offset:.38},{transform:'translate(-50%,-50%) scale(.45) rotate(390deg)',opacity:.75,offset:.72},{transform:'translate(-50%,-50%) scale(0) rotate(540deg)',opacity:0}],{duration:880,easing:'ease-in'});
+    await Promise.all([pull.finished.catch(()=>{}),recoil.finished.catch(()=>{})]);
+    suction.classList.remove('visible');
+    pig.classList.remove('visible');
   }
 
   async function runPreview() {
